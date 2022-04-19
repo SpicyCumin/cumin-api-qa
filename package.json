@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/SpicyCumin/cumin-api-qa#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.3.0"
   }
 }

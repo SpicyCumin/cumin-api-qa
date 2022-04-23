@@ -1,9 +1,6 @@
-DROP DATABASE IF EXISTS sdc;
-CREATE DATABASE sdc;
-
 DROP TABLE IF EXISTS questions CASCADE;
 DROP TABLE IF EXISTS answers CASCADE;
-DROP TABLE IF EXISTS  photos CASCADE;
+DROP TABLE IF EXISTS photos CASCADE;
 
 CREATE TABLE questions (
   question_id SERIAL PRIMARY KEY,
@@ -13,10 +10,10 @@ CREATE TABLE questions (
   asker_name TEXT,
   asker_email TEXT,
   question_reported BOOLEAN,
-  question_helpful INT
+  question_helpfulness INT
 );
 
-COPY questions (question_id, product_id, question_body, question_date, asker_name, asker_email, question_reported, question_helpful) FROM '/Users/stephanieyeong/RFE2202/cumin-api-qa-csv/questions.csv' DELIMITERS ',' CSV header;
+COPY questions (question_id, product_id, question_body, question_date, asker_name, asker_email, question_reported, question_helpfulness) FROM '/Users/stephanieyeong/RFE2202/cumin-api-qa-csv/questions.csv' DELIMITERS ',' CSV header;
 
 CREATE TABLE answers (
   answer_id SERIAL PRIMARY KEY,
@@ -26,14 +23,15 @@ CREATE TABLE answers (
   answerer_name TEXT,
   answerer_email TEXT,
   answer_reported BOOLEAN,
-  answer_helpful INT,
+  answer_helpfulness INT,
+  answer_photos TEXT[],
   CONSTRAINT fk_questions
   FOREIGN KEY (question_id)
   REFERENCES questions(question_id)
   ON DELETE CASCADE
 );
 
-COPY answers (answer_id, question_id, answer_body, answer_date, answerer_name, answerer_email, answer_reported, answer_helpful) FROM '/Users/stephanieyeong/RFE2202/cumin-api-qa-csv/answers.csv' DELIMITERS ',' CSV header;
+COPY answers (answer_id, question_id, answer_body, answer_date, answerer_name, answerer_email, answer_reported, answer_helpfulness) FROM '/Users/stephanieyeong/RFE2202/cumin-api-qa-csv/answers.csv' DELIMITERS ',' CSV header;
 
 CREATE TABLE photos (
   photo_id SERIAL PRIMARY KEY,
@@ -46,4 +44,43 @@ CREATE TABLE photos (
 );
 
 COPY photos (photo_id, answer_id, url) FROM '/Users/stephanieyeong/RFE2202/cumin-api-qa-csv/answers_photos.csv' DELIMITERS ',' CSV header;
+
+CREATE INDEX ON questions(question_id);
+CREATE INDEX ON questions(product_id);
+CREATE INDEX ON answers(answer_id);
+CREATE INDEX ON answers(question_id);
+CREATE INDEX ON photos(photo_id);
+CREATE INDEX ON photos(answer_id);
+
+
+UPDATE answers SET answer_photos = ARRAY(
+ SELECT photos.url
+ FROM photos
+ WHERE photos.answer_id = answers.answer_id
+);
+
+
+
+SELECT
+    questions.question_id AS question_id,
+    product_id,
+    question_body,
+    question_date,
+    asker_name,
+    asker_email,
+    question_reported,
+    question_helpfulness,
+    questions_reported
+  FROM questions LEFT JOIN (SELECT answers.answer_id, json_build_object(
+        'id', answers.answer_id,
+        'body', answers.answer_body,
+        'date', answers.answer_date,
+        'answerer_name', answers.answerer_name,
+        'helpfulness', answers.answer_helpfulness,
+        'photos', answers.answer_photos
+      )) AS answers
+  ON questions.question_id = answers.question_id;
+
+
+
 

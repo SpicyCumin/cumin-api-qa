@@ -12,11 +12,9 @@ async function main() {
 const questionsSchema = new mongoose.Schema({
 	product_id : {
 		type: Number,
-		index: true,
 	},
 	question_id : {
 		type: Number,
-		unique: true,
 	},
 	question_body : {
 		type: String,
@@ -51,7 +49,6 @@ const answersSchema = new mongoose.Schema({
 	},
 	answer_id : {
 		type: Number,
-		unique: true
 	},
 	answer_body : {
 		type: String,
@@ -81,7 +78,6 @@ const answersSchema = new mongoose.Schema({
 		{
 			photo_id: {
 				type: Number,
-        unique: true
 			},
 			url : {
 				type: String,
@@ -94,6 +90,8 @@ const answersSchema = new mongoose.Schema({
 
 const Questions = mongoose.model('Questions', questionsSchema);
 const Answers = mongoose.model('Answers', answersSchema);
+
+
 
 
 module.exports = { Questions, Answers }

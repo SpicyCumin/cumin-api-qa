@@ -1,10 +1,7 @@
 const { Client } = require('pg');
 
 const db = new Client({
-  host: 'localhost',
-  database: 'sdc',
-  user: 'postgres',
-  password: '',
+  database: 'postgres',
 })
 
 db.connect(err => {

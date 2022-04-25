@@ -59,3 +59,8 @@ UPDATE answers SET answer_photos = ARRAY(
 );
 
 
+
+
+SELECT pg_catalog.setval(pg_get_serial_sequence('questions', 'question_id'), (SELECT MAX(question_id) FROM questions)+1);
+
+SELECT pg_catalog.setval(pg_get_serial_sequence('answers', 'answer_id'), (SELECT MAX(answer_id) FROM answers)+1);

@@ -1,132 +1,149 @@
 const { db } = require('../index.js');
 
-
 const getQuestions = (product_id) => {
   let getQuestionsObj = {
     product_id: `${product_id}`,
-  }
+  };
+  let query = `
+    SELECT
+      questions.question_id AS question_id,
+      questions.question_body AS question_body,
+      to_timestamp(questions.question_date) AS question_date,
+      questions.asker_name AS asker_name,
+      questions.question_helpfulness AS question_helpfulness,
+      questions.question_reported AS reported,
 
-//   .query(`
-//   SELECT * FROM questions AS q
-//     LEFT JOIN
-//     (  SELECT answers.question_id, json_build_object(
-//       'id', answers.answer_id,
-//       'question', answers.question_id,
-//       'body', answers.answer_body,
-//       'date', answers.answer_date,
-//       'answerer_name', answers.answerer_name,
-//       'helpfulness', answers.answer_helpfulness,
-//       'photos', answers.answer_photos
-//       )
-//     AS answers FROM answers) AS a
-//     ON q.question_id = a.question_id
-//   WHERE q.product_id = ${product_id}
-// `)
-  db
-    .query(`SELECT row_to_json(answers)
-    FROM (SELECT * FROM answers WHERE answers.question_id = 2) AS answers`)
+        json_object_agg(answers.answer_id,
+          json_build_object(
+            'id', answers.answer_id,
+            'body', answers.answer_body,
+            'date', answers.answer_date,
+            'answerer_name', answers.answerer_name,
+            'helpfulness', answers.answer_helpfulness,
+            'photos', answers.answer_photos
+          )) AS answers
+
+    FROM questions
+    LEFT JOIN answers
+    ON questions.question_id = answers.question_id
+    WHERE questions.product_id = ${product_id}
+    GROUP BY questions.question_id
+    `;
+
+
+
+  db.query(query)
     .then((res) => {
-      // var arrQuestionID = []
-      // res.rows.map((x) => arrQuestionID.push(x.answers.question))
-      // console.log('here', arrQuestionID)
-      console.log('who me', res.rows)
+      getQuestionsObj.results = res.rows;
+      console.log('alive', getQuestionsObj)
 
     })
     .catch((err) => {
-      console.log('Err in GET getQuestion', err)
-    })
-
+      console.log('Err in GET getQuestion', err);
+    });
 };
 
 const postQuestion = (questionObj) => {
   let { body, name, email, product_id } = questionObj;
-  console.log(questionObj)
+  console.log('model question', questionObj);
   let date = Date.now();
 
-
-  let query = `INSERT INTO questions (product_id, question_body, question_date, asker_name, asker_email) VALUES (${product_id}, ${body}, ${date}, ${name}, ${email})`;
-  db
-    .query(query)
+  let query = `INSERT INTO questions (product_id, question_body, question_date, asker_name, asker_email) VALUES (${product_id}, '${body}', ${date}, '${name}', '${email}')`;
+  db.query(query)
     .then((res) => {
-      console.log(`Sucessful update postQuestion ${[(Date.now() - start).toString()]}ms`)
+      console.log(`Sucessful update postQuestion`);
     })
     .catch((err) => {
-      console.log('Err in update postQuestion', err)
-    })
+      console.log('Err in update postQuestion', err);
+    });
 };
 
 const postAnswer = (question_id, answerObj) => {
-  let { body, name, email, photos} = answerObj;
-  let date = Date.now();
-  console.log('model answer', question_id)
+  let { body, name, email, photos } = answerObj;
 
-  let query =  `INSERT INTO answers (question_id, answer_body, answer_date, answerer_name, answerer_email, answer_photos) VALUES (${question_id}, ${body}, ${date}, ${name}, ${email}, ${photos})`;
-  db
-  .query(query)
-  .then((res) => {
-    console.log(`Sucessful update postAnswer ${[(Date.now() - start).toString()]}ms`)
-  })
-  .catch((err) => {
-    console.log('Err in update postAnswer', err)
-  })
+  let query = {
+    text: `INSERT INTO answers (question_id, answer_body, answer_date, answerer_name, answerer_email, answer_photos) VALUES ($1, $2, $3, $4, $5, $6)`,
+    values: [Number(question_id), body, date, name, email, photos],
+  };
+  db.query(query)
+    .then((res) => {
+      console.log(`Sucessful update postAnswer`);
+    })
+    .catch((err) => {
+      console.log('Err in update postAnswer', err);
+    });
 };
 
 const reportQuestion = (question_id) => {
   let start = Date.now();
   let query = `UPDATE questions SET question_reported = TRUE WHERE question_id = ${question_id}`;
 
-  db
-    .query(query)
+  db.query(query)
     .then((res) => {
-      console.log(`Sucessful update reportedQuestion ${[(Date.now() - start).toString()]}ms`)
+      console.log(
+        `Sucessful update reportedQuestion ${[
+          (Date.now() - start).toString(),
+        ]}ms`
+      );
     })
     .catch((err) => {
-      console.log('Err in update reportedQuestion', err)
-    })
+      console.log('Err in update reportedQuestion', err);
+    });
 };
 
 const reportAnswer = (answer_id) => {
   let start = Date.now();
-  let query =  `UPDATE answers SET answer_reported = TRUE WHERE answer_id = ${answer_id}`;
+  let query = `UPDATE answers SET answer_reported = TRUE WHERE answer_id = ${answer_id}`;
 
-  db
-    .query(query)
+  db.query(query)
     .then((res) => {
-      console.log(`Sucessful update reportedAnswer ${[(Date.now() - start).toString()]}ms`)
+      console.log(
+        `Sucessful update reportedAnswer ${[(Date.now() - start).toString()]}ms`
+      );
     })
     .catch((err) => {
-      console.log('Err in update reportedAnswer', err)
-    })
+      console.log('Err in update reportedAnswer', err);
+    });
 };
 
 const helpfulQuestion = (question_id) => {
   let start = Date.now();
   let query = `UPDATE questions SET question_helpful = question_helpful+1 WHERE question_id = ${question_id}`;
 
-  db
-    .query(query)
+  db.query(query)
     .then((res) => {
-      console.log(`Sucessful update helpfulQuestion ${[(Date.now() - start).toString()]}ms`)
+      console.log(
+        `Sucessful update helpfulQuestion ${[
+          (Date.now() - start).toString(),
+        ]}ms`
+      );
     })
     .catch((err) => {
-      console.log('Err in update helpfulQuestion', err)
-    })
+      console.log('Err in update helpfulQuestion', err);
+    });
 };
 
 const helpfulAnswer = (answer_id) => {
   let start = Date.now();
   let query = `UPDATE answers SET answer_helpful = answer_helpful+1 WHERE answer_id = ${answer_id}`;
 
-  db
-    .query(query)
+  db.query(query)
     .then((res) => {
-      console.log(`Sucessful update helpfulAnswer ${[(Date.now() - start).toString()]}ms`)
+      console.log(
+        `Sucessful update helpfulAnswer ${[(Date.now() - start).toString()]}ms`
+      );
     })
     .catch((err) => {
-      console.log('Err in update helpfulAnswer', err)
-    })
-
+      console.log('Err in update helpfulAnswer', err);
+    });
 };
 
-
-module.exports = { getQuestions, postQuestion, postAnswer, reportQuestion, reportAnswer, helpfulQuestion, helpfulAnswer };
+module.exports = {
+  getQuestions,
+  postQuestion,
+  postAnswer,
+  reportQuestion,
+  reportAnswer,
+  helpfulQuestion,
+  helpfulAnswer,
+};

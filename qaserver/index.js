@@ -11,8 +11,7 @@ app.use(express.json());
 
 app.get(`/qa/questions/:productId`, (req, res) => {
   let product_id = req.params.productId
-  // getQuestions(product_id)
-  console.log('made it')
+  getQuestions(product_id)
 });
 
 app.post(`/qa/questions/`, (req, res) => {

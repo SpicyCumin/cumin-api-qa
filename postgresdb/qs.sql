@@ -52,35 +52,10 @@ CREATE INDEX ON answers(question_id);
 CREATE INDEX ON photos(photo_id);
 CREATE INDEX ON photos(answer_id);
 
-
 UPDATE answers SET answer_photos = ARRAY(
  SELECT photos.url
  FROM photos
  WHERE photos.answer_id = answers.answer_id
 );
-
-
-
-SELECT
-    questions.question_id AS question_id,
-    product_id,
-    question_body,
-    question_date,
-    asker_name,
-    asker_email,
-    question_reported,
-    question_helpfulness,
-    questions_reported
-  FROM questions LEFT JOIN (SELECT answers.answer_id, json_build_object(
-        'id', answers.answer_id,
-        'body', answers.answer_body,
-        'date', answers.answer_date,
-        'answerer_name', answers.answerer_name,
-        'helpfulness', answers.answer_helpfulness,
-        'photos', answers.answer_photos
-      )) AS answers
-  ON questions.question_id = answers.question_id;
-
-
 
 

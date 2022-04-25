@@ -31,9 +31,10 @@ const getQuestions = (product_id) => {
     GROUP BY questions.question_id
     `;
 
-  db.query(query)
+   return db.query(query)
     .then((res) => {
       getQuestionsObj.results = res.rows;
+      return getQuestionsObj;
     })
     .catch((err) => {
       console.log('Err in GET getQuestion', err);
@@ -46,7 +47,7 @@ const postQuestion = (questionObj) => {
 
   let query = `INSERT INTO questions (product_id, question_body, question_date, asker_name, asker_email) VALUES (${product_id}, '${body}', ${date}, '${name}', '${email}')`;
 
-  db.query(query)
+  return db.query(query)
     .then((res) => {
       console.log(`Sucessful update postQuestion`);
     })
@@ -63,7 +64,7 @@ const postAnswer = (question_id, answerObj) => {
     values: [Number(question_id), body, date, name, email, photos],
   };
 
-  db.query(query)
+  return db.query(query)
     .then((res) => {
       console.log(`Sucessful update postAnswer`);
     })
@@ -75,7 +76,7 @@ const postAnswer = (question_id, answerObj) => {
 const reportQuestion = (question_id) => {
   let query = `UPDATE questions SET question_reported = TRUE WHERE question_id = ${question_id}`;
 
-  db.query(query)
+  return db.query(query)
     .then((res) => {
       console.log(
         `Sucessful update reportedQuestion`
@@ -89,7 +90,7 @@ const reportQuestion = (question_id) => {
 const reportAnswer = (answer_id) => {
   let query = `UPDATE answers SET answer_reported = TRUE WHERE answer_id = ${answer_id}`;
 
-  db.query(query)
+  return db.query(query)
     .then((res) => {
       console.log(
         `Sucessful update reportedAnswer`
@@ -103,7 +104,7 @@ const reportAnswer = (answer_id) => {
 const helpfulQuestion = (question_id) => {
   let query = `UPDATE questions SET question_helpful = question_helpful+1 WHERE question_id = ${question_id}`;
 
-  db.query(query)
+  return db.query(query)
     .then((res) => {
       console.log(
         `Sucessful update helpfulQuestion`
@@ -117,7 +118,7 @@ const helpfulQuestion = (question_id) => {
 const helpfulAnswer = (answer_id) => {
   let query = `UPDATE answers SET answer_helpful = answer_helpful+1 WHERE answer_id = ${answer_id}`;
 
-  db.query(query)
+  return db.query(query)
     .then((res) => {
       console.log(
         `Sucessful update helpfulAnswer`

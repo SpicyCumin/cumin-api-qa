@@ -1,10 +1,11 @@
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
+const { PORT } = require('../config/config.js')
 require('dotenv').config();
 const { getQuestions, postQuestion, postAnswer, reportQuestion, reportAnswer, helpfulQuestion, helpfulAnswer } = require('../postgresdb/models/models.js');
 
-const PORT = process.env.PORT || 3080;
+const PORT = PORT || 3080;
 
 const app = express();
 app.use(express.json());

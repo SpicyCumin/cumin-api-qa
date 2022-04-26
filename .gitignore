@@ -1,2 +1,6 @@
-node_modules
-.env
+## NPM ##
+npm
+node_modules/
+
+## PORT ##
+/config/config.js

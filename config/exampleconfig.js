@@ -1,3 +1,3 @@
 var PORT = 'YOUR PORT HERE';
 
-export { PORT }
+module.exports = { PORT }

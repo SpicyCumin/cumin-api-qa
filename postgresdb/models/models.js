@@ -58,7 +58,7 @@ const postQuestion = (questionObj) => {
 
 const postAnswer = (question_id, answerObj) => {
   let { body, name, email, photos } = answerObj;
-
+  let date = Date.now();
   let query = {
     text: `INSERT INTO answers (question_id, answer_body, answer_date, answerer_name, answerer_email, answer_photos) VALUES ($1, $2, $3, $4, $5, $6)`,
     values: [Number(question_id), body, date, name, email, photos],
@@ -102,7 +102,7 @@ const reportAnswer = (answer_id) => {
 };
 
 const helpfulQuestion = (question_id) => {
-  let query = `UPDATE questions SET question_helpful = question_helpful+1 WHERE question_id = ${question_id}`;
+  let query = `UPDATE questions SET question_helpfulness = question_helpfulness+1 WHERE question_id = ${question_id}`;
 
   return db.query(query)
     .then((res) => {
@@ -116,7 +116,7 @@ const helpfulQuestion = (question_id) => {
 };
 
 const helpfulAnswer = (answer_id) => {
-  let query = `UPDATE answers SET answer_helpful = answer_helpful+1 WHERE answer_id = ${answer_id}`;
+  let query = `UPDATE answers SET answer_helpfulness = answer_helpfulness+1 WHERE answer_id = ${answer_id}`;
 
   return db.query(query)
     .then((res) => {

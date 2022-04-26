@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.get(`/qa/questions/:productId`, (req, res) => {
-  let product_id = req.params.productId
+  let product_id = req.params.productId;
   getQuestions(product_id)
   .then((data) => res.status(200).send(data))
   .catch((err) => console.log('GET for QA product failed'));
@@ -18,15 +18,15 @@ app.get(`/qa/questions/:productId`, (req, res) => {
 
 app.post(`/qa/questions/`, (req, res) => {
   let questionObj = req.body;
-  postQuestion(questionObj);
+  postQuestion(questionObj)
   .then((data) => res.status(201).send(data))
   .catch((err) => console.log('POST for question failed'));
 });
 
 app.post(`/qa/questions/:questionId/answers`, (req, res) => {
   let question_id = req.params.questionId;
-  let answerObj = req.body
-  postAnswer(question_id, answerObj);
+  let answerObj = req.body;
+  postAnswer(question_id, answerObj)
   .then((data) => res.status(201).send(data))
   .catch((err) => console.log('POST for answer failed'));
 });

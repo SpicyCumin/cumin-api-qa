@@ -27,11 +27,11 @@ const getQuestions = (product_id) => {
     FROM questions
     LEFT JOIN answers
     ON questions.question_id = answers.question_id
-    WHERE questions.product_id = ${product_id}
+    WHERE questions.product_id = $1::INTEGER
     GROUP BY questions.question_id
     `;
 
-   return db.query(query)
+   return db.query(query, [product_id])
     .then((res) => {
       getQuestionsObj.results = res.rows;
       return getQuestionsObj;

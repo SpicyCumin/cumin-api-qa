@@ -18,17 +18,27 @@ app.get(`/qa/questions/:productId`, (req, res) => {
 
 app.post(`/qa/questions/`, (req, res) => {
   let questionObj = req.body;
-  postQuestion(questionObj)
-  .then((data) => res.status(201).send(data))
-  .catch((err) => console.log('POST for question failed'));
+
+  if (Object.keys(req.body).length) {
+    postQuestion(questionObj)
+    .then((data) => res.status(201).send(data))
+    .catch((err) => console.log('POST for question failed'));
+  } else {
+    res.send('No question added')
+  }
 });
 
 app.post(`/qa/questions/:questionId/answers`, (req, res) => {
   let question_id = req.params.questionId;
   let answerObj = req.body;
-  postAnswer(question_id, answerObj)
-  .then((data) => res.status(201).send(data))
-  .catch((err) => console.log('POST for answer failed'));
+
+  if (Object.keys(req.body).length) {
+    postAnswer(question_id, answerObj)
+    .then((data) => res.status(201).send(data))
+    .catch((err) => console.log('POST for answer failed'));
+  } else {
+    res.send('No answer added')
+  }
 });
 
 app.put(`/qa/questions/:questionId/helpful`, (req, res) => {

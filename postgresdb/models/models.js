@@ -13,7 +13,7 @@ const getQuestions = (product_id) => {
       questions.asker_name AS asker_name,
       questions.question_helpfulness AS question_helpfulness,
       questions.question_reported AS reported,
-
+      (SELECT
         json_object_agg(answers.answer_id,
           json_build_object(
             'id', answers.answer_id,
@@ -22,19 +22,19 @@ const getQuestions = (product_id) => {
             'answerer_name', answers.answerer_name,
             'helpfulness', answers.answer_helpfulness,
             'photos', answers.answer_photos
-          )) AS answers
-
-    FROM questions
-    LEFT JOIN answers
-    ON questions.question_id = answers.question_id
-    WHERE questions.product_id = $1::INTEGER
-    GROUP BY questions.question_id
+          )) FROM answers
+          WHERE questions.question_id = answers.question_id
+          )AS answers
+      FROM questions
+      WHERE questions.product_id = $1::INTEGER
     `;
 
    return db.query(query, [product_id])
     .then((res) => {
+      console.log('Sucessful get in getQuestions')
       getQuestionsObj.results = res.rows;
       return getQuestionsObj;
+
     })
     .catch((err) => {
       console.log('Err in GET getQuestion', err);
@@ -49,10 +49,10 @@ const postQuestion = (questionObj) => {
 
   return db.query(query)
     .then((res) => {
-      console.log(`Sucessful update postQuestion`);
+      console.log(`Sucessful insert postQuestion`);
     })
     .catch((err) => {
-      console.log('Err in update postQuestion', err);
+      console.log('Err in insert postQuestion', err);
     });
 };
 
@@ -66,10 +66,10 @@ const postAnswer = (question_id, answerObj) => {
 
   return db.query(query)
     .then((res) => {
-      console.log(`Sucessful update postAnswer`);
+      console.log(`Sucessful insert postAnswer`);
     })
     .catch((err) => {
-      console.log('Err in update postAnswer', err);
+      console.log('Err in insert postAnswer', err);
     });
 };
 

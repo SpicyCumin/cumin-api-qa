@@ -6,6 +6,10 @@ const { getQuestions, postQuestion, postAnswer, reportQuestion, reportAnswer, he
 
 const port = PORT || 3080;
 
+app.get('/loaderIO suff here', (req, res) => {
+  res.send('loaderIO stuff here');
+});
+
 const app = express();
 app.use(express.json());
 

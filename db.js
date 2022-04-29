@@ -1,5 +1,5 @@
 const { Client } = require('pg');
-const { PORT, HOST1, USER, PASSWORD, DBPORT, DB } = require('../config/config.js')
+const { PORT, HOST1, USER, PASSWORD, DBPORT, DB } = require('./config.js')
 
 const db = new Client({
   database: DB,

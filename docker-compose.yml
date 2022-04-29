@@ -16,7 +16,7 @@ services:
     ports:
       - 3002:5432
     environment:
-      POSTGRES_PASSWORD: ${PASSWORD}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
     build:
       context: .
       dockerfile: postgres.Dockerfile

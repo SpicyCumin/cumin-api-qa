@@ -6,8 +6,8 @@ const { PORT } = require('./config.js')
 const app = express();
 app.use(express.json());
 
-// app.get('loaderIO suff here', (req, res) => {
-//   res.send('loaderIO stuff here');
+// app.get('/loaderio-086728e1daaa44ea2ffe3888df264633', (req, res) => {
+//   res.send('loaderio-086728e1daaa44ea2ffe3888df264633');
 // });
 
 const port = PORT || 3080;

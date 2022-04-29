@@ -10,3 +10,9 @@ node_modules/
 
 ## ENV ##
 .env
+
+## CONFIG ##
+config.js
+
+connect.sh
+init.sh

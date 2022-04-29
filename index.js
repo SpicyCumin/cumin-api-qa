@@ -1,9 +1,12 @@
 const express = require('express');
 const path = require('path');
 const { getQuestions, postQuestion, postAnswer, reportQuestion, reportAnswer, helpfulQuestion, helpfulAnswer } = require('./models.js');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
+
+const port = process.env.PORT || 3080;
 
 app.get(`/qa/questions/:productId`, (req, res) => {
   let product_id = req.params.productId;
@@ -65,8 +68,8 @@ app.put(`/qa/answers/:answerId/report`, (req, res) => {
   .catch((err) => console.log('PUT for answer reported failed'));
 });
 
-app.listen(1234, () => {
-  console.log(`Listening to port : 1234`);
+app.listen(port, () => {
+  console.log(`Listening to port : ${port}`);
 });
 
 

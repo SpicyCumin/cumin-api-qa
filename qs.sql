@@ -2,9 +2,9 @@ DROP TABLE IF EXISTS questions CASCADE;
 DROP TABLE IF EXISTS answers CASCADE;
 DROP TABLE IF EXISTS photos CASCADE;
 
-CREATE DATABASE sdc;
+-- CREATE DATABASE sdc;
 
-\c sdc;
+-- \c sdc;
 
 CREATE TABLE questions (
   question_id SERIAL PRIMARY KEY,

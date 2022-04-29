@@ -2,10 +2,6 @@ DROP TABLE IF EXISTS questions CASCADE;
 DROP TABLE IF EXISTS answers CASCADE;
 DROP TABLE IF EXISTS photos CASCADE;
 
--- CREATE DATABASE sdc;
-
--- \c sdc;
-
 CREATE TABLE questions (
   question_id SERIAL PRIMARY KEY,
   product_id INT,
@@ -17,7 +13,7 @@ CREATE TABLE questions (
   question_helpfulness INT
 );
 
-COPY questions (question_id, product_id, question_body, question_date, asker_name, asker_email, question_reported, question_helpfulness) FROM '/seed/questions.csv' DELIMITERS ',' CSV header;
+COPY questions (question_id, product_id, question_body, question_date, asker_name, asker_email, question_reported, question_helpfulness) FROM '/Users/stephanieyeong/RFE2202/cumin-api-qa-csv/questions.csv' DELIMITERS ',' CSV header;
 
 CREATE TABLE answers (
   answer_id SERIAL PRIMARY KEY,
@@ -35,7 +31,7 @@ CREATE TABLE answers (
   ON DELETE CASCADE
 );
 
-COPY answers (answer_id, question_id, answer_body, answer_date, answerer_name, answerer_email, answer_reported, answer_helpfulness) FROM '/seed/answers.csv' DELIMITERS ',' CSV header;
+COPY answers (answer_id, question_id, answer_body, answer_date, answerer_name, answerer_email, answer_reported, answer_helpfulness) FROM '/Users/stephanieyeong/RFE2202/cumin-api-qa-csv/answers.csv' DELIMITERS ',' CSV header;
 
 CREATE TABLE photos (
   photo_id SERIAL PRIMARY KEY,
@@ -47,7 +43,7 @@ CREATE TABLE photos (
   ON DELETE CASCADE
 );
 
-COPY photos (photo_id, answer_id, url) FROM '/seed/answers_photos.csv' DELIMITERS ',' CSV header;
+COPY photos (photo_id, answer_id, url) FROM '/Users/stephanieyeong/RFE2202/cumin-api-qa-csv/answers_photos.csv' DELIMITERS ',' CSV header;
 
 CREATE INDEX ON questions(question_id);
 CREATE INDEX ON questions(product_id);
@@ -66,4 +62,3 @@ UPDATE answers SET answer_photos = ARRAY(
 SELECT pg_catalog.setval(pg_get_serial_sequence('questions', 'question_id'), (SELECT MAX(question_id) FROM questions)+1);
 
 SELECT pg_catalog.setval(pg_get_serial_sequence('answers', 'answer_id'), (SELECT MAX(answer_id) FROM answers)+1);
-

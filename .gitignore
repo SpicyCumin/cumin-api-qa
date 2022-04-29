@@ -14,5 +14,8 @@ node_modules/
 ## CONFIG ##
 config.js
 
-connect.sh
+## SH ##
 init.sh
+
+## Unused ##
+postgres.Dockerfile

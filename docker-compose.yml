@@ -3,21 +3,10 @@ services:
   node:
     image: sdc-node
     container_name: sdc-node
-    # depends_on:
-    #   - postgres
     ports:
       - 3080:3080
     build:
       context: .
       dockerfile: node.Dockerfile
-  # postgres:
-  #   image: sdc-postgres
-  #   container_name: sdc-postgres
-  #   ports:
-  #     - 3002:5432
-  #   environment:
-  #     POSTGRES_PASSWORD: ${PGPASSWORD}
-  #   build:
-  #     context: .
-  #     dockerfile: postgres.Dockerfile
+
 

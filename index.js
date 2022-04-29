@@ -1,12 +1,16 @@
 const express = require('express');
 const path = require('path');
 const { getQuestions, postQuestion, postAnswer, reportQuestion, reportAnswer, helpfulQuestion, helpfulAnswer } = require('./models.js');
-require('dotenv').config();
+const { PORT } = require('./config.js')
 
 const app = express();
 app.use(express.json());
 
-const port = process.env.PORT || 3080;
+// app.get('loaderIO suff here', (req, res) => {
+//   res.send('loaderIO stuff here');
+// });
+
+const port = PORT || 3080;
 
 app.get(`/qa/questions/:productId`, (req, res) => {
   let product_id = req.params.productId;

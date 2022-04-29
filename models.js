@@ -29,12 +29,11 @@ const getQuestions = (product_id) => {
       WHERE questions.product_id = $1::INTEGER
     `;
 
-   return db.query(query, [product_id])
+  return db
+    .query(query, [product_id])
     .then((res) => {
-      console.log('Sucessful get in getQuestions')
       getQuestionsObj.results = res.rows;
       return getQuestionsObj;
-
     })
     .catch((err) => {
       console.log('Err in GET getQuestion', err);
@@ -47,7 +46,8 @@ const postQuestion = (questionObj) => {
 
   let query = `INSERT INTO questions (product_id, question_body, question_date, asker_name, asker_email) VALUES (${product_id}, '${body}', ${date}, '${name}', '${email}')`;
 
-  return db.query(query)
+  return db
+    .query(query)
     .then((res) => {
       console.log(`Sucessful insert postQuestion`);
     })
@@ -64,7 +64,8 @@ const postAnswer = (question_id, answerObj) => {
     values: [Number(question_id), body, date, name, email, photos],
   };
 
-  return db.query(query)
+  return db
+    .query(query)
     .then((res) => {
       console.log(`Sucessful insert postAnswer`);
     })
@@ -76,11 +77,10 @@ const postAnswer = (question_id, answerObj) => {
 const reportQuestion = (question_id) => {
   let query = `UPDATE questions SET question_reported = TRUE WHERE question_id = ${question_id}`;
 
-  return db.query(query)
+  return db
+    .query(query)
     .then((res) => {
-      console.log(
-        `Sucessful update reportedQuestion`
-      );
+      console.log(`Sucessful update reportedQuestion`);
     })
     .catch((err) => {
       console.log('Err in update reportedQuestion', err);
@@ -90,11 +90,10 @@ const reportQuestion = (question_id) => {
 const reportAnswer = (answer_id) => {
   let query = `UPDATE answers SET answer_reported = TRUE WHERE answer_id = ${answer_id}`;
 
-  return db.query(query)
+  return db
+    .query(query)
     .then((res) => {
-      console.log(
-        `Sucessful update reportedAnswer`
-      );
+      console.log(`Sucessful update reportedAnswer`);
     })
     .catch((err) => {
       console.log('Err in update reportedAnswer', err);
@@ -104,11 +103,10 @@ const reportAnswer = (answer_id) => {
 const helpfulQuestion = (question_id) => {
   let query = `UPDATE questions SET question_helpfulness = question_helpfulness+1 WHERE question_id = ${question_id}`;
 
-  return db.query(query)
+  return db
+    .query(query)
     .then((res) => {
-      console.log(
-        `Sucessful update helpfulQuestion`
-      );
+      console.log(`Sucessful update helpfulQuestion`);
     })
     .catch((err) => {
       console.log('Err in update helpfulQuestion', err);
@@ -118,11 +116,10 @@ const helpfulQuestion = (question_id) => {
 const helpfulAnswer = (answer_id) => {
   let query = `UPDATE answers SET answer_helpfulness = answer_helpfulness+1 WHERE answer_id = ${answer_id}`;
 
-  return db.query(query)
+  return db
+    .query(query)
     .then((res) => {
-      console.log(
-        `Sucessful update helpfulAnswer`
-      );
+      console.log(`Sucessful update helpfulAnswer`);
     })
     .catch((err) => {
       console.log('Err in update helpfulAnswer', err);
@@ -138,4 +135,3 @@ module.exports = {
   helpfulQuestion,
   helpfulAnswer,
 };
-

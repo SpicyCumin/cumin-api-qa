@@ -1,14 +1,6 @@
 const express = require('express');
 const path = require('path');
-const axios = require('axios');
-const { PORT } = require('../config/config.js')
-const { getQuestions, postQuestion, postAnswer, reportQuestion, reportAnswer, helpfulQuestion, helpfulAnswer } = require('../postgresdb/models/models.js');
-
-const port = PORT || 3080;
-
-app.get('/loaderIO suff here', (req, res) => {
-  res.send('loaderIO stuff here');
-});
+const { getQuestions, postQuestion, postAnswer, reportQuestion, reportAnswer, helpfulQuestion, helpfulAnswer } = require('./models.js');
 
 const app = express();
 app.use(express.json());
@@ -73,6 +65,8 @@ app.put(`/qa/answers/:answerId/report`, (req, res) => {
   .catch((err) => console.log('PUT for answer reported failed'));
 });
 
-app.listen(port, () => {
-  console.log(`Listening to port : ${port}`);
+app.listen(1234, () => {
+  console.log(`Listening to port : 1234`);
 });
+
+

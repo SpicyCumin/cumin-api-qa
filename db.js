@@ -1,12 +1,11 @@
 const { Client } = require('pg');
-const { PORT, HOST1, USER, PASSWORD, DBPORT, DB } = require('../config/config.js')
 
 const db = new Client({
-  database: DB,
-  host: HOST1,
-  user: USER,
-  password: PASSWORD,
-  port: DBPORT,
+  user: 'postgres',
+  host: 'sdc-postgres',
+  database: 'sdc',
+  password: 'cuminsdc',
+  port: 5432,
 })
 
 db.connect(err => {

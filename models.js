@@ -1,4 +1,4 @@
-const { db } = require('../index.js');
+const { db } = require('./db.js');
 
 const getQuestions = (product_id) => {
   let getQuestionsObj = {
@@ -138,3 +138,4 @@ module.exports = {
   helpfulQuestion,
   helpfulAnswer,
 };
+

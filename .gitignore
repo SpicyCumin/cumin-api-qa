@@ -2,5 +2,9 @@
 npm
 node_modules/
 
-## PORT ##
-/config/config.js
+##CSV##
+*.csv
+
+##DS STORE##
+.DS_Store
+

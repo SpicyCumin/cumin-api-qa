@@ -16,7 +16,7 @@ services:
     ports:
       - 3002:5432
     environment:
-      POSTGRES_PASSWORD: cuminsdc
+      POSTGRES_PASSWORD: ${PASSWORD}
     build:
       context: .
       dockerfile: postgres.Dockerfile

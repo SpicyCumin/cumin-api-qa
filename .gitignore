@@ -8,3 +8,8 @@ node_modules/
 ##DS STORE##
 .DS_Store
 
+## ENV ##
+.env
+
+## CONFIG ##
+config.js

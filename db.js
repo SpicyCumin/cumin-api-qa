@@ -1,10 +1,11 @@
 const { Client } = require('pg');
+const { PASSWORD } = require('./config.js')
 
 const db = new Client({
   user: 'postgres',
   host: 'sdc-postgres',
   database: 'sdc',
-  password: 'cuminsdc',
+  password: PASSWORD,
   port: 5432,
 })
 
